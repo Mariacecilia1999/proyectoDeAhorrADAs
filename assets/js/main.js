@@ -11,13 +11,18 @@ const abrirMenu = () =>{
    ocultar('#iconoAbrirMenu')
 }
 
+const cerrarMenu = () =>{
+   ocultar('#menu')
+   ocultar('#iconoCerrar')
+   mostrar('#iconoAbrirMenu')
+}
 
 
 
 /************************************************/
 const inicializador = () =>{
    $('#iconoAbrirMenu').addEventListener('click', abrirMenu)
-   console.log('inicializador')
+   $('#iconoCerrar').addEventListener('click', cerrarMenu)
 }
 window.addEventListener('load', inicializador)
 
