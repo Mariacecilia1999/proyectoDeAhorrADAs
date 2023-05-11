@@ -7,6 +7,8 @@ const ocultar = selector => $(selector).classList.add('hidden')
 /**************FUNCIONALIDAD DEL NAVBAR*************/
 const abrirMenu = () =>{
    mostrar('#menu')
+   mostrar('#iconoCerrar')
+   ocultar('#iconoAbrirMenu')
 }
 
 
