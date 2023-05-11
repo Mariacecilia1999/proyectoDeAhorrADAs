@@ -4,6 +4,17 @@ const $ = selector => document.querySelector(selector)
 const mostrar = selector => $(selector).classList.remove('hidden')
 const ocultar = selector => $(selector).classList.add('hidden')
 
+/*******************LOCAL STORAGE******************/
+const getCategorias = key => JSON.parse(localStorage.getItem(key))
+
+const setCategorias = (key, array) => (localStorage.setItem(key, JSON.stringify(array)))
+
+const todasLasCategorias = getCategorias('categorias') || []
+
+
+
+
+
 /**************FUNCIONALIDAD DEL NAVBAR*************/
 const abrirMenu = () =>{
    mostrar('#menu')
@@ -17,22 +28,10 @@ const cerrarMenu = () =>{
    mostrar('#iconoAbrirMenu')
 }
 
-/******************* CATEGORIAS**********************/
-const categorias = [
-   {
-      nombre: 'Estudios'
-   },
-   {
-      nombre: 'Compras'
-   },
-   {
-      nombre: 'Luz'
-   }
-]
 
 /******************MOSTRAR CATEGORIAS***********************/
 
-const mostrarCategorias = (valores) =>{
+const mostrarCategorias = (categorias) =>{
    for(const categoria of valores){
       $('#agregarValoresCategorias').innerHTML += `
       <div class='py-3 flex justify-between items-center'>
@@ -44,16 +43,32 @@ const mostrarCategorias = (valores) =>{
       </div>`
    }
 }
-mostrarCategorias(categorias)
 
 
+
+const guardarCategoria = () =>{
+   return{
+      nombre: $('#nombreCategoria').value
+   }
+}
+
+
+
+const agregarCategoria = () =>{
+   const categorias = getCategorias('categorias')
+   const nuevaCategoria = guardarCategoria()
+   categorias.push(nuevaCategoria)
+   setCategorias('categorias', nuevaCategoria)
+}
 
 
 
 /***************INICIALIZACIÓN DE FUNCIONES***********/
 const inicializador = () =>{
+   setCategorias('categorias', todasLasCategorias)
    $('#iconoAbrirMenu').addEventListener('click', abrirMenu)
    $('#iconoCerrar').addEventListener('click', cerrarMenu)
+   $('#agregarCategoria').addEventListener('click', agregarCategoria)
 }
 window.addEventListener('load', inicializador)
 
