@@ -17,20 +17,46 @@ const cerrarMenu = () =>{
    mostrar('#iconoAbrirMenu')
 }
 
+/******************* CATEGORIAS**********************/
+const categorias = [
+   {
+      nombre: 'Estudios'
+   },
+   {
+      nombre: 'Compras'
+   },
+   {
+      nombre: 'Luz'
+   }
+]
 
+/******************MOSTRAR CATEGORIAS***********************/
 
-/************************************************/
-const inicializador = () =>{
-   $('#iconoAbrirMenu').addEventListener('click', abrirMenu)
-   $('#iconoCerrar').addEventListener('click', cerrarMenu)
+const mostrarCategorias = (valores) =>{
+   for(const categoria of valores){
+      $('#agregarValoresCategorias').innerHTML += `
+      <div class='py-3 flex justify-between items-center'>
+         <h3 class='px-2 py-1 text-xs text-cyan-400 bg-emerald-100 rounded'>${categoria.nombre}</h3>
+         <div>
+            <button class='pr-3 text-xs text-blue-800 hover:text-black'>Editar</button>
+            <button class='text-xs text-blue-800 hover:text-black'>Eliminar</button>
+         </div>
+      </div>`
+   }
 }
-window.addEventListener('load', inicializador)
+mostrarCategorias(categorias)
 
 
 
 
 
 /***************INICIALIZACIÓN DE FUNCIONES***********/
+const inicializador = () =>{
+   $('#iconoAbrirMenu').addEventListener('click', abrirMenu)
+   $('#iconoCerrar').addEventListener('click', cerrarMenu)
+}
+window.addEventListener('load', inicializador)
+
 
 
 
