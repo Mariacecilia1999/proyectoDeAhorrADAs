@@ -5,14 +5,16 @@ const mostrar = selector => $(selector).classList.remove('hidden')
 const ocultar = selector => $(selector).classList.add('hidden')
 
 /**************FUNCIONALIDAD DEL NAVBAR*************/
-
-
+const abrirMenu = () =>{
+   mostrar('#menu')
+}
 
 
 
 
 /************************************************/
 const inicializador = () =>{
+   $('#iconoAbrirMenu').addEventListener('click', abrirMenu)
    console.log('inicializador')
 }
 window.addEventListener('load', inicializador)
