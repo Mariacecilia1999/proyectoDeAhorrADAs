@@ -1,13 +1,17 @@
 
+/******************HANDLERS*********************/
+
 /***************FUNCIONES REUTILIZABLES*************/
 const $ = selector => document.querySelector(selector)
 const mostrar = selector => $(selector).classList.remove('hidden')
 const ocultar = selector => $(selector).classList.add('hidden')
 
-/*******************LOCAL STORAGE******************/
-const getCategorias = key => JSON.parse(localStorage.getItem(key))
+const id = () => self.crypto.randomUUID()
 
-const setCategorias = (key, array) => (localStorage.setItem(key, JSON.stringify(array)))
+/*******************LOCAL STORAGE******************/
+const getCategorias = (key) => JSON.parse(localStorage.getItem(key))
+
+const setCategorias = (key, array) => localStorage.setItem(key, JSON.stringify(array))
 
 const todasLasCategorias = getCategorias('categorias') || []
 
@@ -32,15 +36,17 @@ const cerrarMenu = () =>{
 /******************MOSTRAR CATEGORIAS***********************/
 
 const mostrarCategorias = (categorias) =>{
-   for(const categoria of valores){
+   if(categorias && categorias.length > 0){
+   for(const {nombre, id } of categorias){
       $('#agregarValoresCategorias').innerHTML += `
       <div class='py-3 flex justify-between items-center'>
-         <h3 class='px-2 py-1 text-xs text-cyan-400 bg-emerald-100 rounded'>${categoria.nombre}</h3>
+         <h3 class='px-2 py-1 text-xs text-cyan-400 bg-emerald-100 rounded'>${nombre}</h3>
          <div>
             <button class='pr-3 text-xs text-blue-800 hover:text-black'>Editar</button>
             <button class='text-xs text-blue-800 hover:text-black'>Eliminar</button>
          </div>
       </div>`
+   }
    }
 }
 
@@ -48,17 +54,21 @@ const mostrarCategorias = (categorias) =>{
 
 const guardarCategoria = () =>{
    return{
+      id: id(),
       nombre: $('#nombreCategoria').value
    }
 }
 
+/************DELETE**************/
 
 
+
+/*******************************/
 const agregarCategoria = () =>{
    const categorias = getCategorias('categorias')
    const nuevaCategoria = guardarCategoria()
    categorias.push(nuevaCategoria)
-   setCategorias('categorias', nuevaCategoria)
+   setCategorias('categorias', categorias)
 }
 
 
@@ -66,6 +76,7 @@ const agregarCategoria = () =>{
 /***************INICIALIZACIÓN DE FUNCIONES***********/
 const inicializador = () =>{
    setCategorias('categorias', todasLasCategorias)
+   mostrarCategorias(todasLasCategorias)
    $('#iconoAbrirMenu').addEventListener('click', abrirMenu)
    $('#iconoCerrar').addEventListener('click', cerrarMenu)
    $('#agregarCategoria').addEventListener('click', agregarCategoria)
