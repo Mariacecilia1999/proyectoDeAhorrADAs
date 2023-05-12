@@ -69,6 +69,17 @@ const eliminarCategoria = (id) =>{
    mostrarCategorias(todasLasCategorias)
 }
 
+/***************VALIDO INPUT****************/
+const logicaValorinput = (e) =>{
+   e.preventDefault()
+   if($('#nombreCategoria').value.length >= 4 ){
+      agregarCategoria()
+      window.location.reload()
+   }else{
+      console.log('error')
+      $('#errorValorInput').innerHTML = `<p class='text-red-400'>Agrega un nombre de la categoria valido</p>`
+   }
+}
 
 /*******************************/
 const agregarCategoria = () =>{
@@ -86,7 +97,7 @@ const inicializador = () =>{
    mostrarCategorias(todasLasCategorias)
    $('#iconoAbrirMenu').addEventListener('click', abrirMenu)
    $('#iconoCerrar').addEventListener('click', cerrarMenu)
-   $('#agregarCategoria').addEventListener('click', agregarCategoria)
+   $('#agregarCategoria').addEventListener('click', logicaValorinput)
 }
 window.addEventListener('load', inicializador)
 
