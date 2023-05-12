@@ -15,6 +15,7 @@ const setCategorias = (key, array) => localStorage.setItem(key, JSON.stringify(a
 
 const todasLasCategorias = getCategorias('categorias') || []
 
+const vaciar = (selector) => $(selector).innerHTML = ''
 
 
 
@@ -36,6 +37,7 @@ const cerrarMenu = () =>{
 /******************MOSTRAR CATEGORIAS***********************/
 
 const mostrarCategorias = (categorias) =>{
+   vaciar('#agregarValoresCategorias')
    if(categorias && categorias.length > 0){
    for(const {nombre, id } of categorias){
       $('#agregarValoresCategorias').innerHTML += `
@@ -43,7 +45,7 @@ const mostrarCategorias = (categorias) =>{
          <h3 class='px-2 py-1 text-xs text-cyan-400 bg-emerald-100 rounded'>${nombre}</h3>
          <div>
             <button class='pr-3 text-xs text-blue-800 hover:text-black'>Editar</button>
-            <button class='text-xs text-blue-800 hover:text-black'>Eliminar</button>
+            <button class='text-xs text-blue-800 hover:text-black' onclick='eliminarCategoria("${id}")'>Eliminar</button>
          </div>
       </div>`
    }
@@ -60,7 +62,12 @@ const guardarCategoria = () =>{
 }
 
 /************DELETE**************/
-
+const eliminarCategoria = (id) =>{
+   const todasLasCategorias = getCategorias('categorias').filter(categoria => categoria.id !== id)
+   console.log(id)
+   setCategorias('categorias',todasLasCategorias)
+   mostrarCategorias(todasLasCategorias)
+}
 
 
 /*******************************/
