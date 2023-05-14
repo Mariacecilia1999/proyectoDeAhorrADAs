@@ -54,9 +54,9 @@ const mostrarCategorias = (categorias) =>{
 
 
 
-const guardarCategoria = () =>{
+const guardarCategoria = (categoriaId) =>{
    return{
-      id: id(),
+      id: categoriaId ? categoriaId : id(),
       nombre: $('#nombreCategoria').value
    }
 }
@@ -83,11 +83,10 @@ const editarCategoriaForm = (id) =>{
 
 /**************EDITAR CATEGORIA NOMBRE*************/
 const editarCategoria = () => {
-   const id = $('#editarCategoria').getAttribute('dataId')
-   console.log(id)
+   const categoriaId = $('#editarCategoria').getAttribute('dataId')
    const editarCategoria = getCategorias('categorias').map(categoria => {
-      if(categoria.id === id){
-         return guardarCategoria()
+      if(categoria.id === categoriaId){
+         return guardarCategoria(categoriaId)
          //window.location.reload()
       }
       return categoria
