@@ -44,7 +44,7 @@ const mostrarCategorias = (categorias) =>{
       <div class='py-3 flex justify-between items-center'>
          <h3 class='px-2 py-1 text-xs text-cyan-400 bg-emerald-100 rounded'>${nombre}</h3>
          <div>
-            <button class='pr-3 text-xs text-blue-800 hover:text-black'>Editar</button>
+            <button class='pr-3 text-xs text-blue-800 hover:text-black' onclick='editarCategoria("${id}")'>Editar</button>
             <button class='text-xs text-blue-800 hover:text-black' onclick='eliminarCategoria("${id}")'>Eliminar</button>
          </div>
       </div>`
@@ -68,6 +68,18 @@ const eliminarCategoria = (id) =>{
    setCategorias('categorias',todasLasCategorias)
    mostrarCategorias(todasLasCategorias)
 }
+
+/************EDITAR CATEGORIA***************/
+
+const editarCategoria = (id) =>{
+   ocultar('#agregarValoresCategorias')
+   mostrar('#editarCategoria')
+   ocultar('#agregarCategoria')
+   console.log(id)
+}
+
+
+
 
 /***************VALIDO INPUT****************/
 const logicaValorinput = (e) =>{
