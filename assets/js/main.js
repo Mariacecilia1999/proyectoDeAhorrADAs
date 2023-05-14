@@ -76,6 +76,8 @@ const editarCategoria = (id) =>{
    mostrar('#editarCategoria')
    ocultar('#agregarCategoria')
    console.log(id)
+   const categoriaSeleccionada = getCategorias('categorias').find(categoria => categoria.id === id)
+   $('#nombreCategoria').value = categoriaSeleccionada.nombre
 }
 
 
