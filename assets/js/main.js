@@ -44,7 +44,7 @@ const mostrarCategorias = (categorias) =>{
       <div class='py-3 flex justify-between items-center'>
          <h3 class='px-2 py-1 text-xs text-cyan-400 bg-emerald-100 rounded'>${nombre}</h3>
          <div>
-            <button class='pr-3 text-xs text-blue-800 hover:text-black' onclick='editarCategoria("${id}")'>Editar</button>
+            <button class='pr-3 text-xs text-blue-800 hover:text-black' onclick='editarCategoriaForm("${id}")'>Editar</button>
             <button class='text-xs text-blue-800 hover:text-black' onclick='eliminarCategoria("${id}")'>Eliminar</button>
          </div>
       </div>`
@@ -69,15 +69,30 @@ const eliminarCategoria = (id) =>{
    mostrarCategorias(todasLasCategorias)
 }
 
-/************EDITAR CATEGORIA***************/
+/************EDITAR CATEGORIA FORM***************/
 
-const editarCategoria = (id) =>{
+const editarCategoriaForm = (id) =>{
    ocultar('#agregarValoresCategorias')
    mostrar('#editarCategoria')
    ocultar('#agregarCategoria')
    console.log(id)
+   $('#editarCategoria').setAttribute('dataId', id)
    const categoriaSeleccionada = getCategorias('categorias').find(categoria => categoria.id === id)
    $('#nombreCategoria').value = categoriaSeleccionada.nombre
+}
+
+/**************EDITAR CATEGORIA NOMBRE*************/
+const editarCategoria = () => {
+   const id = $('#editarCategoria').getAttribute('dataId')
+   console.log(id)
+   const editarCategoria = getCategorias('categorias').map(categoria => {
+      if(categoria.id === id){
+         return guardarCategoria()
+         //window.location.reload()
+      }
+      return categoria
+   })
+   setCategorias('categorias',editarCategoria)
 }
 
 
@@ -112,6 +127,10 @@ const inicializador = () =>{
    $('#iconoAbrirMenu').addEventListener('click', abrirMenu)
    $('#iconoCerrar').addEventListener('click', cerrarMenu)
    $('#agregarCategoria').addEventListener('click', logicaValorinput)
+   $('#editarCategoria').addEventListener('click', () =>{
+      //e.preventDefault()
+      editarCategoria()
+   })
 }
 window.addEventListener('load', inicializador)
 
