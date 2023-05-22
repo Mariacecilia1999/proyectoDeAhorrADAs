@@ -1,26 +1,13 @@
 
-/******************HANDLERS*********************/
-
-/***************FUNCIONES REUTILIZABLES*************/
 const $ = selector => document.querySelector(selector)
 const mostrar = selector => $(selector).classList.remove('hidden')
 const ocultar = selector => $(selector).classList.add('hidden')
-
 const id = () => self.crypto.randomUUID()
-
-/*******************LOCAL STORAGE******************/
 const getCategorias = (key) => JSON.parse(localStorage.getItem(key))
-
 const setCategorias = (key, array) => localStorage.setItem(key, JSON.stringify(array))
-
 const todasLasCategorias = getCategorias('categorias') || []
-
 const vaciar = (selector) => $(selector).innerHTML = ''
 
-
-
-
-/**************FUNCIONALIDAD DEL NAVBAR*************/
 const abrirMenu = () =>{
    mostrar('#menu')
    mostrar('#iconoCerrar')
@@ -32,9 +19,6 @@ const cerrarMenu = () =>{
    ocultar('#iconoCerrar')
    mostrar('#iconoAbrirMenu')
 }
-
-
-/******************MOSTRAR CATEGORIAS***********************/
 
 const mostrarCategorias = (categorias) =>{
    vaciar('#agregarValoresCategorias')
@@ -51,9 +35,6 @@ const mostrarCategorias = (categorias) =>{
    }
    }
 }
-
-
-
 const guardarCategoria = (categoriaId) =>{
    return{
       id: categoriaId ? categoriaId : id(),
@@ -61,15 +42,12 @@ const guardarCategoria = (categoriaId) =>{
    }
 }
 
-/************DELETE**************/
 const eliminarCategoria = (id) =>{
    const todasLasCategorias = getCategorias('categorias').filter(categoria => categoria.id !== id)
    console.log(id)
    setCategorias('categorias',todasLasCategorias)
    mostrarCategorias(todasLasCategorias)
 }
-
-/************EDITAR CATEGORIA FORM***************/
 
 const editarCategoriaForm = (id) =>{
    ocultar('#agregarValoresCategorias')
@@ -81,23 +59,17 @@ const editarCategoriaForm = (id) =>{
    $('#nombreCategoria').value = categoriaSeleccionada.nombre
 }
 
-/**************EDITAR CATEGORIA NOMBRE*************/
 const editarCategoria = () => {
    const categoriaId = $('#editarCategoria').getAttribute('dataId')
    const editarCategoria = getCategorias('categorias').map(categoria => {
       if(categoria.id === categoriaId){
          return guardarCategoria(categoriaId)
-         //window.location.reload()
       }
-      return categoria
+      return categoria 
    })
    setCategorias('categorias',editarCategoria)
 }
 
-
-
-
-/***************VALIDO INPUT****************/
 const logicaValorinput = (e) =>{
    e.preventDefault()
    if($('#nombreCategoria').value.length >= 4 ){
@@ -109,7 +81,6 @@ const logicaValorinput = (e) =>{
    }
 }
 
-/*******************************/
 const agregarCategoria = () =>{
    const categorias = getCategorias('categorias')
    const nuevaCategoria = guardarCategoria()
@@ -117,9 +88,6 @@ const agregarCategoria = () =>{
    setCategorias('categorias', categorias)
 }
 
-
-
-/***************INICIALIZACIÓN DE FUNCIONES***********/
 const inicializador = () =>{
    setCategorias('categorias', todasLasCategorias)
    mostrarCategorias(todasLasCategorias)
@@ -127,14 +95,8 @@ const inicializador = () =>{
    $('#iconoCerrar').addEventListener('click', cerrarMenu)
    $('#agregarCategoria').addEventListener('click', logicaValorinput)
    $('#editarCategoria').addEventListener('click', () =>{
-      //e.preventDefault()
       editarCategoria()
    })
 }
+
 window.addEventListener('load', inicializador)
-
-
-
-
-
-/*************************************************/
