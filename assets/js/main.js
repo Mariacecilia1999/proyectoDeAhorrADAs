@@ -23,7 +23,7 @@ const cerrarMenu = () =>{
 const mostrarCategorias = (categorias) =>{
    vaciar('#agregarValoresCategorias')
    if(categorias && categorias.length > 0){
-   for(const {nombre, id } of categorias){
+      for(const {nombre, id } of categorias){
       $('#agregarValoresCategorias').innerHTML += `
       <div class='py-3 flex justify-between items-center'>
          <h3 class='px-2 py-1 text-xs text-cyan-400 bg-emerald-100 rounded'>${nombre}</h3>
