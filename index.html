@@ -57,7 +57,7 @@
       </div>
    </section>
    <!-----------SECCIÓN BALANCE---------->
-   <section class="flex justify-center mt-9">
+   <section class="flex items-center flex-col mt-9">
       <div class="py-4 px-3 my-2 w-11/12 bg-white rounded">
          <h2 class="my-3 text-4xl">Balance</h2>
          <div class="py-3 my-3 flex justify-between">
@@ -72,6 +72,29 @@
             <p class="text-2xl">TOTAL</p>
             <p>$0</p>
          </div>
+      </div>
+      <div class="py-4 px-3 my-2 mt-5 w-11/12 bg-white rounded">
+         <div class="flex justify-between items-center">
+            <h2 class="text-2xl font-bold">Filtros</h2>
+            <p>Ocultar filtros</p>
+         </div>
+         <form>
+            <h4 class="py-3 font-bold">Tipo</h4>
+            <select class="py-2 w-full border border-slate-200 rounded">
+               <option value="todos">Todos</option>
+            </select>
+            <h4 class="py-3 font-bold">Desde</h4>
+            <input type="date" class="py-2 w-full border border-slate-200 rounded"">
+            <h4 class="py-3 font-bold" >Ordenar</h4>
+            <select class="py-2 w-full border border-slate-200 rounded"">
+               <option value="masReciente">Más recientes</option>
+               <option value="menosReciente">Menos recientes</option>
+               <option value="mayorMonto">Mayor monto</option>
+               <option value="menorMonto">Menor monto</option>
+               <option value="a/z">A/Z</option>
+               <option value="z/a">Z/A</option>
+            </select>
+         </form>
       </div>
    </section>
    <script src="./assets/js/main.js"></script>
