@@ -32,9 +32,9 @@ const mostrarCategorias = (categorias) =>{
             <button class='text-xs text-blue-800 hover:text-black' onclick='eliminarCategoria("${id}")'>Eliminar</button>
          </div>
       </div>`
-   }
-   }
-}
+      colocarCategoriaInput(nombre)
+      }
+}}
 const guardarCategoria = (categoriaId) =>{
    return{
       id: categoriaId ? categoriaId : id(),
@@ -87,6 +87,13 @@ const agregarCategoria = () =>{
    categorias.push(nuevaCategoria)
    setCategorias('categorias', categorias)
 }
+
+const colocarCategoriaInput = (nombre) =>{ 
+   $('#nuevaOperacionCategoria').innerHTML +=  `<option value='${nombre}'> ${nombre}</option>`
+}
+
+
+
 
 const inicializador = () =>{
    setCategorias('categorias', todasLasCategorias)
