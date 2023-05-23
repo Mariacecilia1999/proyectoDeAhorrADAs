@@ -22,6 +22,7 @@ const cerrarMenu = () =>{
 
 const mostrarCategorias = (categorias) =>{
    vaciar('#agregarValoresCategorias')
+   vaciar('#nuevaOperacionCategoria')
    if(categorias && categorias.length > 0){
       for(const {nombre, id } of categorias){
       $('#agregarValoresCategorias').innerHTML += `
@@ -88,8 +89,9 @@ const agregarCategoria = () =>{
    setCategorias('categorias', categorias)
 }
 
-const colocarCategoriaInput = (nombre) =>{ 
+const colocarCategoriaInput = (nombre) =>{
    $('#nuevaOperacionCategoria').innerHTML +=  `<option value='${nombre}'> ${nombre}</option>`
+
 }
 
 
