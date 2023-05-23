@@ -39,7 +39,7 @@ const mostrarCategorias = (categorias) =>{
 const guardarCategoria = (categoriaId) =>{
    return{
       id: categoriaId ? categoriaId : id(),
-      nombre: $('#nombreCategoria').value
+      nombre: $('#nombreCategoria').value,
    }
 }
 

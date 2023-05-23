@@ -117,11 +117,11 @@
          <h2 class="py-2 mb-7 text-5xl">Nueva operación</h2>
          <form action="">
             <h3 class="my-2 font-bold">Descripción</h3>
-            <input type="text" class="py-1 w-full border border-slate-200 rounded">
+            <input type="text" class="py-1 w-full border border-slate-200 rounded" id="descripcionOperacion">
             <h3 class="my-2 font-bold">Monto</h3>
-            <input type="number" class="py-1 w-full border border-slate-200 rounded">
+            <input type="number" class="py-1 w-full border border-slate-200 rounded" id="montoOperacion">
             <h3 class="my-2 font-bold">Tipo</h3>
-           <select name="" id="" class="py-1 w-full border border-slate-200 rounded">
+           <select name="" id="" class="py-1 w-full border border-slate-200 rounded" id="gastoGanancia">
             <option value="gasto">Gasto</option>
             <option value="ganancia">Ganancia</option>t
            </select>
@@ -129,10 +129,10 @@
            <select name="" id="nuevaOperacionCategoria" class="py-1 w-full border border-slate-200 rounded">
            </select>
             <h3 class="my-2 font-bold">Fecha</h3>
-            <input type="date" class="py-1 w-full border border-slate-200 rounded">
+            <input type="date" class="py-1 w-full border border-slate-200 rounded" id="fechaOperacion">
             <div class="mt-7 flex justify-end">
                <button class="mr-5 px-4 py-2 bg-slate-100 hover:bg-slate-200 rounded">Cancelar</button>
-               <button class="px-4 py-2 text-white bg-green-500 rounded">Agregar</button>
+               <button class="px-4 py-2 text-white bg-green-500 rounded" id="agregarOperacion">Agregar</button>
             </div>
          </form>
       </div>
