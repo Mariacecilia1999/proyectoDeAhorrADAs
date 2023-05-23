@@ -3,9 +3,9 @@ const $ = selector => document.querySelector(selector)
 const mostrar = selector => $(selector).classList.remove('hidden')
 const ocultar = selector => $(selector).classList.add('hidden')
 const id = () => self.crypto.randomUUID()
-const getCategorias = (key) => JSON.parse(localStorage.getItem(key))
-const setCategorias = (key, array) => localStorage.setItem(key, JSON.stringify(array))
-const todasLasCategorias = getCategorias('categorias') || []
+const get = (key) => JSON.parse(localStorage.getItem(key))
+const set = (key, array) => localStorage.setItem(key, JSON.stringify(array))
+const todasLasCategorias = get('categorias') || []
 const vaciar = (selector) => $(selector).innerHTML = ''
 
 const abrirMenu = () =>{
@@ -44,9 +44,9 @@ const guardarCategoria = (categoriaId) =>{
 }
 
 const eliminarCategoria = (id) =>{
-   const todasLasCategorias = getCategorias('categorias').filter(categoria => categoria.id !== id)
+   const todasLasCategorias = get('categorias').filter(categoria => categoria.id !== id)
    console.log(id)
-   setCategorias('categorias',todasLasCategorias)
+   set('categorias',todasLasCategorias)
    mostrarCategorias(todasLasCategorias)
 }
 
@@ -56,19 +56,19 @@ const editarCategoriaForm = (id) =>{
    ocultar('#agregarCategoria')
    console.log(id)
    $('#editarCategoria').setAttribute('dataId', id)
-   const categoriaSeleccionada = getCategorias('categorias').find(categoria => categoria.id === id)
+   const categoriaSeleccionada = get('categorias').find(categoria => categoria.id === id)
    $('#nombreCategoria').value = categoriaSeleccionada.nombre
 }
 
 const editarCategoria = () => {
    const categoriaId = $('#editarCategoria').getAttribute('dataId')
-   const editarCategoria = getCategorias('categorias').map(categoria => {
+   const editarCategoria = get('categorias').map(categoria => {
       if(categoria.id === categoriaId){
          return guardarCategoria(categoriaId)
       }
       return categoria 
    })
-   setCategorias('categorias',editarCategoria)
+   set('categorias',editarCategoria)
 }
 
 const logicaValorinput = (e) =>{
@@ -83,28 +83,61 @@ const logicaValorinput = (e) =>{
 }
 
 const agregarCategoria = () =>{
-   const categorias = getCategorias('categorias')
+   const categorias = get('categorias')
    const nuevaCategoria = guardarCategoria()
    categorias.push(nuevaCategoria)
-   setCategorias('categorias', categorias)
-}
+   set('categorias', categorias)
+} 
 
+
+/*NUEVA OPERACIÓN */
+const operaciones = get('operaciones') || []
 const colocarCategoriaInput = (nombre) =>{
    $('#nuevaOperacionCategoria').innerHTML +=  `<option value='${nombre}'> ${nombre}</option>`
-
 }
+
+const guardarNuevaOperacion= () =>{
+   return{
+      id:  id(),
+      categoria: $('#nuevaOperacionCategoria').value,
+      descripcion: $('#descripcionOperacion').value,
+      monto: $('#montoOperacion').value,
+      tipo: $('#tipoCategoria').value,
+      fecha: $('#fechaOperacion').value
+   }
+}
+
+const agregarNuevaOperacion = () =>{
+   const obtengoOperaciones = get('operaciones')
+   const nuevaOperacion = guardarNuevaOperacion()
+   obtengoOperaciones.push(nuevaOperacion)
+   set('operaciones', obtengoOperaciones)
+}
+
+// const mostrarNuevaOperacion = (operaciones) =>{
+//    console.log('aaaaaaaa')
+//    for(const {fecha, categoria} of operaciones){
+//       console.log(categoria)
+//    }
+// }
 
 
 
 
 const inicializador = () =>{
-   setCategorias('categorias', todasLasCategorias)
+   set('categorias', todasLasCategorias)
+   set('operaciones', operaciones)
    mostrarCategorias(todasLasCategorias)
    $('#iconoAbrirMenu').addEventListener('click', abrirMenu)
    $('#iconoCerrar').addEventListener('click', cerrarMenu)
    $('#agregarCategoria').addEventListener('click', logicaValorinput)
    $('#editarCategoria').addEventListener('click', () =>{
       editarCategoria()
+   })
+   $('#agregarOperacion').addEventListener('click', (e)=>{
+      e.preventDefault()
+      agregarNuevaOperacion()
+      //mostrarNuevaOperacion(operaciones)
    })
 }
 
