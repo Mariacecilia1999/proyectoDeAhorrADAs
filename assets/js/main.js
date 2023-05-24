@@ -114,14 +114,27 @@ const agregarNuevaOperacion = () =>{
    set('operaciones', obtengoOperaciones)
 }
 
-// const mostrarNuevaOperacion = (operaciones) =>{
-//    console.log('aaaaaaaa')
-//    for(const {fecha, categoria} of operaciones){
-//       console.log(categoria)
-//    }
-// }
+const mostrarNuevaOperacion = (operaciones) =>{
+   
+   if(operaciones.length > 0){
+      ocultar('#sinOperaciones')
+      mostrar('#conOperaciones')
+      for(const {id, descripcion, monto, fecha, categoria} of operaciones){
+         $('#valoresOperaciones').innerHTML += `
+                  <td>${descripcion}</td>
+                  <td>${categoria}</td>
+                  <td>${fecha}</td>
+                  <td>${monto}</td>
+                  <td>
+                     <button>Editar</button>
+                     <button>Eliminar</button>
+                  </td>
+         `
+      }
+   }
+}
 
-
+//console.log(operaciones)
 
 
 const inicializador = () =>{
@@ -137,7 +150,7 @@ const inicializador = () =>{
    $('#agregarOperacion').addEventListener('click', (e)=>{
       e.preventDefault()
       agregarNuevaOperacion()
-      //mostrarNuevaOperacion(operaciones)
+      mostrarNuevaOperacion(operaciones)
    })
 }
 
