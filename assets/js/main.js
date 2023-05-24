@@ -96,9 +96,9 @@ const colocarCategoriaInput = (nombre) =>{
    $('#nuevaOperacionCategoria').innerHTML +=  `<option value='${nombre}'> ${nombre}</option>`
 }
 
-const guardarNuevaOperacion= () =>{
+const guardarNuevaOperacion= (operacionId) =>{
    return{
-      id:  id(),
+      id: operacionId ? operacionId : id(),
       categoria: $('#nuevaOperacionCategoria').value,
       descripcion: $('#descripcionOperacion').value,
       monto: $('#montoOperacion').value,
@@ -144,7 +144,7 @@ const eliminarOperacion = (id) =>{
 }
 
 const editarOperacionForm = (id) =>{
-   $('#editarCategoria').setAttribute('dataId', id)
+   $('#editarOperacion').setAttribute('dataId', id)
    const operacionSeleccionada = get('operaciones').find(operacion => operacion.id === id)
    $('#descripcionOperacion').value = operacionSeleccionada.descripcion
    $('#montoOperacion').value = operacionSeleccionada.monto
@@ -154,7 +154,18 @@ const editarOperacionForm = (id) =>{
    
 }
 
+const editarOperacion = () =>{
+   const idOperacion = $('#editarOperacion').getAttribute('dataId')
+   console.log(idOperacion)
+   const editarOperacion = get('operaciones').map(operacion =>{
+      if(operacion.id === idOperacion){
+         return guardarNuevaOperacion(operacion.id)
+      }
+      return operacion
+   })
 
+   set('operaciones', editarOperacion)
+}
 
 
 const inicializador = () =>{
@@ -168,9 +179,15 @@ const inicializador = () =>{
    $('#editarCategoria').addEventListener('click', () =>{
       editarCategoria()
    })
+   $('#editarOperacion').addEventListener('click', (e) =>{
+      e.preventDefault()
+      editarOperacion()
+      mostrarNuevaOperacion(get('operaciones'))
+   })
    $('#agregarOperacion').addEventListener('click', (e)=>{
       e.preventDefault()
       agregarNuevaOperacion()
+      mostrarNuevaOperacion(get('operaciones'))
 
    })
 }
