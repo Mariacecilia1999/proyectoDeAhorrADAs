@@ -112,35 +112,47 @@ const agregarNuevaOperacion = () =>{
    const nuevaOperacion = guardarNuevaOperacion()
    obtengoOperaciones.push(nuevaOperacion)
    set('operaciones', obtengoOperaciones)
+   mostrarNuevaOperacion(operaciones)
 }
 
 const mostrarNuevaOperacion = (operaciones) =>{
-   
+   vaciar('.cuerpoTabla')
    if(operaciones.length > 0){
       ocultar('#sinOperaciones')
       mostrar('#conOperaciones')
       for(const {id, descripcion, monto, fecha, categoria} of operaciones){
-         $('#valoresOperaciones').innerHTML += `
+         $('.cuerpotabla').innerHTML += `
+               <tr class='tr'>
                   <td>${descripcion}</td>
                   <td>${categoria}</td>
                   <td>${fecha}</td>
                   <td>${monto}</td>
                   <td>
                      <button>Editar</button>
-                     <button>Eliminar</button>
+                     <button onclick='eliminarOperacion("${id}")'>Eliminar</button>
                   </td>
+               </tr>
          `
       }
    }
 }
 
-//console.log(operaciones)
+const eliminarOperacion = (id) =>{
+   const operaciones = get('operaciones').filter(operacion => operacion.id !== id)
+   set('operaciones', operaciones)
+   mostrarNuevaOperacion(operaciones)
+}
+
+
+
+
 
 
 const inicializador = () =>{
    set('categorias', todasLasCategorias)
    set('operaciones', operaciones)
    mostrarCategorias(todasLasCategorias)
+   mostrarNuevaOperacion(operaciones)
    $('#iconoAbrirMenu').addEventListener('click', abrirMenu)
    $('#iconoCerrar').addEventListener('click', cerrarMenu)
    $('#agregarCategoria').addEventListener('click', logicaValorinput)
@@ -150,7 +162,7 @@ const inicializador = () =>{
    $('#agregarOperacion').addEventListener('click', (e)=>{
       e.preventDefault()
       agregarNuevaOperacion()
-      mostrarNuevaOperacion(operaciones)
+
    })
 }
 
