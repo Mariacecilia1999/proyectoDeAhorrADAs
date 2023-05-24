@@ -55,7 +55,7 @@ const editarCategoriaForm = (id) =>{
    mostrar('#editarCategoria')
    ocultar('#agregarCategoria')
    console.log(id)
-   $('#editarCategoria').setAttribute('dataId', id)
+   $('#editarOperacion').setAttribute('dataId', id)
    const categoriaSeleccionada = get('categorias').find(categoria => categoria.id === id)
    $('#nombreCategoria').value = categoriaSeleccionada.nombre
 }
@@ -128,7 +128,7 @@ const mostrarNuevaOperacion = (operaciones) =>{
                   <td>${fecha}</td>
                   <td>${monto}</td>
                   <td>
-                     <button>Editar</button>
+                     <button onclick='editarOperacionForm("${id}")'>Editar</button>
                      <button onclick='eliminarOperacion("${id}")'>Eliminar</button>
                   </td>
                </tr>
@@ -143,7 +143,16 @@ const eliminarOperacion = (id) =>{
    mostrarNuevaOperacion(operaciones)
 }
 
-
+const editarOperacionForm = (id) =>{
+   $('#editarCategoria').setAttribute('dataId', id)
+   const operacionSeleccionada = get('operaciones').find(operacion => operacion.id === id)
+   $('#descripcionOperacion').value = operacionSeleccionada.descripcion
+   $('#montoOperacion').value = operacionSeleccionada.monto
+   $('#fechaOperacion').value = operacionSeleccionada.fecha
+   $('#tipoCategoria').value = operacionSeleccionada.tipo
+   $('#nuevaOperacionCategoria').value = operacionSeleccionada.categoria
+   
+}
 
 
 
