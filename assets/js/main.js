@@ -1,6 +1,8 @@
 
 const $ = selector => document.querySelector(selector)
 const mostrar = selector => $(selector).classList.remove('hidden')
+const mostrarMd  = selector => $(selector).classList.remove('md:hidden')
+const ocultarMd= selector => $(selector).classList.add('md:hidden')
 const ocultar = selector => $(selector).classList.add('hidden')
 const id = () => self.crypto.randomUUID()
 const get = (key) => JSON.parse(localStorage.getItem(key))
@@ -22,7 +24,7 @@ const cerrarMenu = () =>{
 
 const mostrarCategorias = (categorias) =>{
    vaciar('#agregarValoresCategorias')
-   vaciar('#nuevaOperacionCategoria')
+   //vaciar('#nuevaOperacionCategoria')
    if(categorias && categorias.length > 0){
       for(const {nombre, id } of categorias){
       $('#agregarValoresCategorias').innerHTML += `
@@ -51,31 +53,35 @@ const eliminarCategoria = (id) =>{
 }
 
 const editarCategoriaForm = (id) =>{
+   mostrar('#cancelarCategoria')
    ocultar('#agregarValoresCategorias')
    mostrar('#editarCategoria')
    ocultar('#agregarCategoria')
    console.log(id)
-   $('#editarOperacion').setAttribute('dataId', id)
+   $('#editarCategoria').setAttribute('dataId', id)
    const categoriaSeleccionada = get('categorias').find(categoria => categoria.id === id)
    $('#nombreCategoria').value = categoriaSeleccionada.nombre
 }
 
 const editarCategoria = () => {
    const categoriaId = $('#editarCategoria').getAttribute('dataId')
-   const editarCategoria = get('categorias').map(categoria => {
+   const categoriasEditadas= get('categorias').map(categoria => {
       if(categoria.id === categoriaId){
          return guardarCategoria(categoriaId)
       }
       return categoria 
    })
-   set('categorias',editarCategoria)
+   set('categorias',categoriasEditadas)
+   mostrar('#agregarValoresCategorias')
+   mostrarCategorias(get('categorias'))
+   ocultar('#editarCategoria')
+   ocultar('#cancelarCategoria')
+   mostrar('#agregarCategoria')
 }
 
-const logicaValorinput = (e) =>{
-   e.preventDefault()
+const logicaValorinput = () =>{
    if($('#nombreCategoria').value.length >= 4 ){
       agregarCategoria()
-      window.location.reload()
    }else{
       console.log('error')
       $('#errorValorInput').innerHTML = `<p class='text-red-400'>Agrega un nombre de la categoria valido</p>`
@@ -87,6 +93,7 @@ const agregarCategoria = () =>{
    const nuevaCategoria = guardarCategoria()
    categorias.push(nuevaCategoria)
    set('categorias', categorias)
+   mostrarCategorias(get('categorias'))
 } 
 
 
@@ -118,6 +125,7 @@ const agregarNuevaOperacion = () =>{
 const mostrarNuevaOperacion = (operaciones) =>{
    vaciar('.cuerpoTabla')
    if(operaciones.length > 0){
+      mostrar('.tabla')
       ocultar('#sinOperaciones')
       mostrar('#conOperaciones')
       for(const {id, descripcion, monto, fecha, categoria} of operaciones){
@@ -134,6 +142,9 @@ const mostrarNuevaOperacion = (operaciones) =>{
                </tr>
          `
       }
+   }else{
+      mostrar('#sinOperaciones')
+      ocultar('.tabla')
    }
 }
 
@@ -144,6 +155,11 @@ const eliminarOperacion = (id) =>{
 }
 
 const editarOperacionForm = (id) =>{
+   mostrar('#seccionNuevaOperacion')
+   ocultar('#agregarOperacion')
+   mostrar('#editarOperacion')
+   ocultar('#seccionBalance')
+   ocultarMd('#seccionBalance')
    $('#editarOperacion').setAttribute('dataId', id)
    const operacionSeleccionada = get('operaciones').find(operacion => operacion.id === id)
    $('#descripcionOperacion').value = operacionSeleccionada.descripcion
@@ -165,6 +181,9 @@ const editarOperacion = () =>{
    })
 
    set('operaciones', editarOperacion)
+   mostrar('#seccionBalance')
+   mostrarMd('#seccionBalance')
+   ocultar('#seccionNuevaOperacion')
 }
 
 
@@ -175,8 +194,14 @@ const inicializador = () =>{
    mostrarNuevaOperacion(operaciones)
    $('#iconoAbrirMenu').addEventListener('click', abrirMenu)
    $('#iconoCerrar').addEventListener('click', cerrarMenu)
-   $('#agregarCategoria').addEventListener('click', logicaValorinput)
-   $('#editarCategoria').addEventListener('click', () =>{
+
+
+   $('#agregarCategoria').addEventListener('click', (e) =>{
+      e.preventDefault()
+      logicaValorinput()
+   })
+   $('#editarCategoria').addEventListener('click', (e) =>{
+      e.preventDefault()
       editarCategoria()
    })
    $('#editarOperacion').addEventListener('click', (e) =>{
@@ -188,7 +213,43 @@ const inicializador = () =>{
       e.preventDefault()
       agregarNuevaOperacion()
       mostrarNuevaOperacion(get('operaciones'))
+      mostrar('#seccionBalance')
+      mostrarMd('#seccionBalance')
+      ocultar('#seccionNuevaOperacion')
 
+   })
+
+   $('#mostrarCategorias').addEventListener('click', () =>{
+      
+      ocultar('#seccionBalance')
+      ocultarMd('#seccionBalance')
+      mostrar('#seccionCategorias')
+   })
+   $('#mostrarBalances').addEventListener('click', () =>{
+      ocultar('#seccionCategorias')
+      mostrar('#seccionBalance')
+      mostrarMd('#seccionBalance')
+   })
+   $('#cancelarCategoria').addEventListener('click', () =>{
+      console.log('cancelar')
+      console.log(get('categorias'))
+      ocultar('#cancelarCategoria')
+      mostrar('#agregarValoresCategorias')
+      ocultar('#editarCategoria')
+      mostrar('#agregarCategoria')
+   })
+   $('#nuevaOperacion').addEventListener('click', () =>{
+      mostrar('#seccionNuevaOperacion')
+      ocultar('#seccionBalance')
+      ocultarMd('#seccionBalance')
+      ocultar('#editarOperacion')
+      mostrar('agregarOperacion')
+   })
+   $('#cancelarOperacion').addEventListener('click', () =>{
+      mostrarNuevaOperacion(get('operaciones'))
+      ocultar('#seccionNuevaOperacion')
+      mostrar('#seccionBalance')
+      mostrarMd('#seccionBalance')
    })
 }
 
