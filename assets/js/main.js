@@ -108,7 +108,7 @@ const guardarNuevaOperacion= (operacionId) =>{
       id: operacionId ? operacionId : id(),
       categoria: $('#nuevaOperacionCategoria').value,
       descripcion: $('#descripcionOperacion').value,
-      monto: $('#montoOperacion').value,
+      monto: parseFloat($('#montoOperacion').value),
       tipo: $('#tipoCategoria').value,
       fecha: $('#fechaOperacion').value
    }
@@ -186,6 +186,22 @@ const editarOperacion = () =>{
    ocultar('#seccionNuevaOperacion')
 }
 
+const calculosBalance = () =>{
+   const ganancia ='ganancia'
+   const filtrarGanancia = get('operaciones').reduce((acumulador, valor) =>{
+      if(valor.tipo === ganancia){
+         return acumulador + valor.monto
+      }
+   }, 0)
+
+   console.log(filtrarGanancia)
+   set('ganancia', filtrarGanancia)
+   console.log(get('ganancia'))
+   $('#mostrarGanancia').innerHTML = get('ganancia')
+}
+
+calculosBalance()
+
 
 const inicializador = () =>{
    set('categorias', todasLasCategorias)
@@ -243,7 +259,7 @@ const inicializador = () =>{
       ocultar('#seccionBalance')
       ocultarMd('#seccionBalance')
       ocultar('#editarOperacion')
-      mostrar('agregarOperacion')
+      mostrar('#agregarOperacion')
    })
    $('#cancelarOperacion').addEventListener('click', () =>{
       mostrarNuevaOperacion(get('operaciones'))
@@ -254,3 +270,4 @@ const inicializador = () =>{
 }
 
 window.addEventListener('load', inicializador)
+
