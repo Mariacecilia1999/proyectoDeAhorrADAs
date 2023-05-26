@@ -152,6 +152,8 @@ const eliminarOperacion = (id) =>{
    const operaciones = get('operaciones').filter(operacion => operacion.id !== id)
    set('operaciones', operaciones)
    mostrarNuevaOperacion(operaciones)
+   calculosBalance()
+
 }
 
 const editarOperacionForm = (id) =>{
@@ -186,24 +188,32 @@ const editarOperacion = () =>{
    ocultar('#seccionNuevaOperacion')
 }
 
+
 const calculosBalance = () =>{
-   const ganancia ='ganancia'
    const filtrarGanancia = get('operaciones').reduce((acumulador, valor) =>{
-      if(valor.tipo === ganancia){
+      if(valor.tipo === 'ganancia'){
          return acumulador + valor.monto
       }
+      return acumulador
    }, 0)
 
-   console.log(filtrarGanancia)
    set('ganancia', filtrarGanancia)
-   console.log(get('ganancia'))
    $('#mostrarGanancia').innerHTML = get('ganancia')
+
+   const filtrarGasto = get('operaciones').reduce((acumulador, valor)=>{
+      if(valor.tipo === 'gasto'){
+         return acumulador - valor.monto
+      }
+      return acumulador
+   }, 0)
+   set('gastos', filtrarGasto)
+   $('#mostrarGastos').innerHTML = get('gastos')
 }
 
-calculosBalance()
 
 
 const inicializador = () =>{
+   calculosBalance()
    set('categorias', todasLasCategorias)
    set('operaciones', operaciones)
    mostrarCategorias(todasLasCategorias)
@@ -224,6 +234,8 @@ const inicializador = () =>{
       e.preventDefault()
       editarOperacion()
       mostrarNuevaOperacion(get('operaciones'))
+      calculosBalance()
+
    })
    $('#agregarOperacion').addEventListener('click', (e)=>{
       e.preventDefault()
@@ -232,6 +244,7 @@ const inicializador = () =>{
       mostrar('#seccionBalance')
       mostrarMd('#seccionBalance')
       ocultar('#seccionNuevaOperacion')
+      calculosBalance()
 
    })
 
