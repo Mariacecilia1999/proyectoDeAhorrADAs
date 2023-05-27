@@ -208,6 +208,12 @@ const calculosBalance = () =>{
    }, 0)
    set('gastos', filtrarGasto)
    $('#mostrarGastos').innerHTML = get('gastos')
+
+   console.log(filtrarGanancia)
+   console.log(filtrarGasto)
+   const total = filtrarGanancia +  filtrarGasto
+   console.log(total)
+   $('#totalBalance').innerHTML = `${total}`
 }
 
 
