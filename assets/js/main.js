@@ -224,17 +224,22 @@ const filtros = () =>{
       $('#valoresCategorias').innerHTML += `<option value="${nombre}">${nombre}</option>`
    }
 
+   const seleccionarTipo = $('#tipoOperacion')
+   seleccionarTipo.addEventListener('change', () =>{
+      const tipoSelecionado = seleccionarTipo.value
+      const filtrarPorOperacion = operaciones.filter(operacion => operacion.tipo === tipoSelecionado)
+      mostrarNuevaOperacion(filtrarPorOperacion)
+   })
+
    const categoriaSeleccionada = $('#valoresCategorias')
    categoriaSeleccionada.addEventListener('change', () => {
       const nombreCategoria = categoriaSeleccionada.value
-
       const filtrarCategoria = operaciones.filter(operacion => operacion.categoria === nombreCategoria)
       console.log(filtrarCategoria)
       mostrarNuevaOperacion(filtrarCategoria)
       if(nombreCategoria === 'Todas'){
          mostrarNuevaOperacion(get('operaciones'))
       }
-      
    })
   
 }
