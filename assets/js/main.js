@@ -241,6 +241,15 @@ const filtros = () =>{
          mostrarNuevaOperacion(get('operaciones'))
       }
    })
+
+   let operacionFecha = $('#operacionFecha')
+   operacionFecha.value = new Date().toISOString().split('T')[0];
+   operacionFecha.addEventListener('change', () => {
+      const fechaSelecionada = operacionFecha.value
+      console.log(fechaSelecionada)
+      const filtrarFecha = operaciones.filter(operacion => operacion.fecha >= fechaSelecionada)
+      mostrarNuevaOperacion(filtrarFecha)
+   })
   
 }
 
