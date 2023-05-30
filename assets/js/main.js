@@ -190,33 +190,56 @@ const editarOperacion = () =>{
 
 
 const calculosBalance = () =>{
-   const filtrarGanancia = get('operaciones').reduce((acumulador, valor) =>{
-      if(valor.tipo === 'ganancia'){
-         return acumulador + valor.monto
-      }
-      return acumulador
-   }, 0)
+   if(operaciones.length >= 1){ 
+      const filtrarGanancia = get('operaciones').reduce((acumulador, valor) =>{
+         if(valor.tipo === 'ganancia'){
+            return acumulador + valor.monto
+         }
+         return acumulador
+      }, 0)
 
-   set('ganancia', filtrarGanancia)
-   $('#mostrarGanancia').innerHTML = get('ganancia')
+      set('ganancia', filtrarGanancia)
+      $('#mostrarGanancia').innerHTML = get('ganancia')
 
-   const filtrarGasto = get('operaciones').reduce((acumulador, valor)=>{
-      if(valor.tipo === 'gasto'){
-         return acumulador - valor.monto
-      }
-      return acumulador
-   }, 0)
-   set('gastos', filtrarGasto)
-   $('#mostrarGastos').innerHTML = get('gastos')
+      const filtrarGasto = get('operaciones').reduce((acumulador, valor)=>{
+         if(valor.tipo === 'gasto'){
+            return acumulador - valor.monto
+         }
+         return acumulador
+      }, 0)
+      set('gastos', filtrarGasto)
+      $('#mostrarGastos').innerHTML = get('gastos')
 
-   console.log(filtrarGanancia)
-   console.log(filtrarGasto)
-   const total = filtrarGanancia +  filtrarGasto
-   console.log(total)
-   $('#totalBalance').innerHTML = `${total}`
+      console.log(filtrarGanancia)
+      console.log(filtrarGasto)
+      const total = filtrarGanancia +  filtrarGasto
+      console.log(total)
+      $('#totalBalance').innerHTML = `${total}`
+   }
 }
 
+const filtros = () =>{
+   const obtengoCategorias = get('categorias')
+   for(const {nombre} of obtengoCategorias){
+      $('#valoresCategorias').innerHTML += `<option value="${nombre}">${nombre}</option>`
+   }
 
+   const categoriaSeleccionada = $('#valoresCategorias')
+   categoriaSeleccionada.addEventListener('change', () => {
+      const nombreCategoria = categoriaSeleccionada.value
+
+      const filtrarCategoria = operaciones.filter(operacion => operacion.categoria === nombreCategoria)
+      console.log(filtrarCategoria)
+      mostrarNuevaOperacion(filtrarCategoria)
+      if(nombreCategoria === 'Todas'){
+         mostrarNuevaOperacion(get('operaciones'))
+      }
+      
+   })
+  
+}
+
+filtros()
 
 const inicializador = () =>{
    calculosBalance()
