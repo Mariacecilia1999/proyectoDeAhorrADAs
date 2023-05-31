@@ -79,6 +79,7 @@ const editarCategoria = () => {
    mostrar('#agregarCategoria')
 }
 
+
 const logicaValorinput = () =>{
    if($('#nombreCategoria').value.length >= 4 ){
       agregarCategoria()
@@ -95,6 +96,15 @@ const agregarCategoria = () =>{
    set('categorias', categorias)
    mostrarCategorias(get('categorias'))
 } 
+
+
+const colocarCategoriaOperacion = () =>{
+   for(const {nombre} of get('categorias')){
+      $('#valoresCategorias').innerHTML += `<option value="${nombre}">${nombre}</option>`
+   }
+   
+}
+colocarCategoriaOperacion()
 
 
 /*NUEVA OPERACIÓN */
@@ -124,7 +134,7 @@ const agregarNuevaOperacion = () =>{
 
 const mostrarNuevaOperacion = (operaciones) =>{
    vaciar('.cuerpoTabla')
-   if(operaciones.length > 0){
+   if(operaciones && operaciones.length > 0){
       mostrar('.tabla')
       ocultar('#sinOperaciones')
       mostrar('#conOperaciones')
@@ -218,44 +228,109 @@ const calculosBalance = () =>{
    }
 }
 
-const filtros = () =>{
-   const obtengoCategorias = get('categorias')
-   for(const {nombre} of obtengoCategorias){
-      $('#valoresCategorias').innerHTML += `<option value="${nombre}">${nombre}</option>`
-   }
-
-   const seleccionarTipo = $('#tipoOperacion')
-   seleccionarTipo.addEventListener('change', () =>{
-      const tipoSelecionado = seleccionarTipo.value
-      const filtrarPorOperacion = operaciones.filter(operacion => operacion.tipo === tipoSelecionado)
-      mostrarNuevaOperacion(filtrarPorOperacion)
-   })
-
-   const categoriaSeleccionada = $('#valoresCategorias')
-   categoriaSeleccionada.addEventListener('change', () => {
-      const nombreCategoria = categoriaSeleccionada.value
-      const filtrarCategoria = operaciones.filter(operacion => operacion.categoria === nombreCategoria)
-      console.log(filtrarCategoria)
-      mostrarNuevaOperacion(filtrarCategoria)
-      if(nombreCategoria === 'Todas'){
-         mostrarNuevaOperacion(get('operaciones'))
-      }
-   })
-
+const fechaFiltroDeHoy = () =>{
    let operacionFecha = $('#operacionFecha')
    operacionFecha.value = new Date().toISOString().split('T')[0];
-   operacionFecha.addEventListener('change', () => {
-      const fechaSelecionada = operacionFecha.value
-      console.log(fechaSelecionada)
-      const filtrarFecha = operaciones.filter(operacion => operacion.fecha >= fechaSelecionada)
-      mostrarNuevaOperacion(filtrarFecha)
-   })
-  
 }
 
-filtros()
+//clase 12/05 filtros paralelos
+
+const aplicarFiltros = () => {
+   const tipoOperacion = $('#tipoOperacion').value
+   const tipoSeleccionado = get('operaciones').filter((operacion) => {
+      if (tipoOperacion === 'todos') {
+         return operacion
+      }
+      return tipoOperacion === operacion.tipo
+   })
+
+   const categoriaOperacion = $('#valoresCategorias').value
+   const filtroCategoria = tipoSeleccionado.filter((operacion) => {
+      if (categoriaOperacion === 'Todas') {
+         return operacion
+      }
+      return categoriaOperacion === operacion.categoria
+   })
+
+   const fechaSeleccionada = new Date($('#operacionFecha').value)
+   const filtrarDesdeFecha = filtroCategoria.filter((operacion) => {
+      if (fechaSeleccionada) {
+         const operacionFecha = new Date(operacion.fecha)
+         return operacionFecha >= fechaSeleccionada
+      }
+      return operacion
+   })
+
+   const filtrosDeOrden = $('#filtrosDeOrden').value
+
+   if (filtrosDeOrden === 'masReciente') {
+      filtrarDesdeFecha.sort((a, b) => {
+         if (a.fecha < b.fecha) return -1
+         if (a.fecha > b.fecha) return 1
+         return 0
+      })
+   } 
+   
+   else if (filtrosDeOrden === 'menosReciente') {
+      filtrarDesdeFecha.sort((a, b) => {
+         if (a.fecha < b.fecha) return 1
+         if (a.fecha > b.fecha) return -1
+         return 0
+      })
+   }
+   
+   else if (filtrosDeOrden === 'mayorMonto') {
+      filtrarDesdeFecha.sort((a, b) => b.monto - a.monto)
+   } 
+   
+   else if (filtrosDeOrden === 'menorMonto') {
+      filtrarDesdeFecha.sort((a, b) => a.monto - b.monto)
+   } 
+   
+   else if (filtrosDeOrden === 'a/z') {
+      filtrarDesdeFecha.sort((a, b) => {
+         if (a.descripcion < b.descripcion) return -1
+         if (a.descripcion > b.descripcion) return 1
+         return 0
+      })
+   }
+   
+   else if (filtrosDeOrden === 'z/a') {
+      filtrarDesdeFecha.sort((a, b) => {
+         if (a.descripcion < b.descripcion) return 1
+         if (a.descripcion > b.descripcion) return -1
+         return 0
+      })
+   }
+
+   return filtrarDesdeFecha
+}
+
+$('#tipoOperacion').addEventListener('change', () => {
+   const arrayFiltros = aplicarFiltros()
+   mostrarNuevaOperacion(arrayFiltros)
+})
+
+$('#valoresCategorias').addEventListener('change', () => {
+   const arrayFiltros = aplicarFiltros()
+   mostrarNuevaOperacion(arrayFiltros)
+})
+
+$('#operacionFecha').addEventListener('change', () => {
+   const arrayFiltros = aplicarFiltros()
+   mostrarNuevaOperacion(arrayFiltros)
+})
+
+$('#filtrosDeOrden').addEventListener('change', () => {
+   const arrayFiltros = aplicarFiltros()
+   mostrarNuevaOperacion(arrayFiltros)
+})
+
+const arrayFiltrosInicial = aplicarFiltros()
+mostrarNuevaOperacion(arrayFiltrosInicial)
 
 const inicializador = () =>{
+   fechaFiltroDeHoy()
    calculosBalance()
    set('categorias', todasLasCategorias)
    set('operaciones', operaciones)
@@ -316,6 +391,7 @@ const inicializador = () =>{
       ocultarMd('#seccionBalance')
       ocultar('#editarOperacion')
       mostrar('#agregarOperacion')
+ 
    })
    $('#cancelarOperacion').addEventListener('click', () =>{
       mostrarNuevaOperacion(get('operaciones'))
