@@ -8,6 +8,7 @@ const id = () => self.crypto.randomUUID()
 const get = (key) => JSON.parse(localStorage.getItem(key))
 const set = (key, array) => localStorage.setItem(key, JSON.stringify(array))
 const todasLasCategorias = get('categorias') || []
+const operaciones = get('operaciones') || []
 const vaciar = (selector) => $(selector).innerHTML = ''
 
 const abrirMenu = () =>{
@@ -108,7 +109,7 @@ colocarCategoriaOperacion()
 
 
 /*NUEVA OPERACIÓN */
-const operaciones = get('operaciones') || []
+
 const colocarCategoriaInput = (nombre) =>{
    $('#nuevaOperacionCategoria').innerHTML +=  `<option value='${nombre}'> ${nombre}</option>`
 }
@@ -367,15 +368,25 @@ const inicializador = () =>{
    })
 
    $('#mostrarCategorias').addEventListener('click', () =>{
-      
       ocultar('#seccionBalance')
+      ocultar('#seccionReporte')
       ocultarMd('#seccionBalance')
       mostrar('#seccionCategorias')
+      mostrarMd('#seccionCategorias')
    })
    $('#mostrarBalances').addEventListener('click', () =>{
+      ocultar('#seccionReporte')
+      ocultarMd('#seccionReporte')
       ocultar('#seccionCategorias')
       mostrar('#seccionBalance')
       mostrarMd('#seccionBalance')
+   })
+   $('#mostrarReportes').addEventListener('click', ()=>{
+      mostrar('#seccionReporte')
+      mostrarMd('#seccionReporte')
+      ocultar('#seccionCategorias')
+      ocultarMd('#seccionCategorias')
+      ocultar('#seccionBalance')
    })
    $('#cancelarCategoria').addEventListener('click', () =>{
       console.log('cancelar')
