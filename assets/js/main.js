@@ -371,6 +371,7 @@ const inicializador = () =>{
       ocultar('#seccionBalance')
       ocultar('#seccionReporte')
       ocultarMd('#seccionBalance')
+      ocultarMd('#seccionReporte')
       mostrar('#seccionCategorias')
       mostrarMd('#seccionCategorias')
    })
@@ -387,6 +388,7 @@ const inicializador = () =>{
       ocultar('#seccionCategorias')
       ocultarMd('#seccionCategorias')
       ocultar('#seccionBalance')
+      ocultarMd('#seccionBalance')
    })
    $('#cancelarCategoria').addEventListener('click', () =>{
       console.log('cancelar')
