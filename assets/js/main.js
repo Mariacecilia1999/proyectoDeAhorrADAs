@@ -416,11 +416,16 @@ const resumenCategorias = () =>{
       return gananciaCategoria[categoria] === Math.max(...Object.values(gananciaCategoria))
    })
 
+   const categoriaMayorGasto = Object.keys(gastosCategoria).find(categoria =>{
+      return gastosCategoria[categoria] === Math.min(...Object.values(gastosCategoria))
+   })
+
    console.log(categoriaMayorGanancia)
+   console.log(categoriaMayorGasto)
 }
 resumenCategorias()
 
-
+console.log(gastosCategoria)
 
 const inicializador = () =>{
    fechaFiltroDeHoy()
