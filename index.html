@@ -167,10 +167,30 @@
          <div class=" md:flex flex-row justify-between">
             <h2 class="mb-6 text-2xl font-bold">Reportes</h2>
          </div>
-         <div class="mt-6 flex flex-col items-center" id="sinOperaciones">
+         <div class="mt-6 flex flex-col items-center" id="sinReportes">
             <img src="./assets/img/operacionesInsuficientes.svg" alt="sin operaciones class=" w-6/12 md:w-6/12">
             <p class="py-2 text-2xl mt-4">Operaciones insuficientes</p>
             <p class="py-5">Prueba agregando más operaciones</p>
+         </div>
+         <div class="hidden mt-6 flex flex-col" id="conReportes">
+            <div class="flex justify-start">
+               <h2 class="mb-6 text-xl font-bold">Totales por categorías</h2>
+            </div>
+
+            <div class="flex justify-center">
+               <table class="tabla">
+                  <tr>  
+                     <th>Categoría</th>
+                     <th>Ganancias</th>
+                     <th>Gastos</th>
+                     <th>Balance</th>
+                  </tr>
+                  <tbody class="cuerpoTablaReportes">
+
+                  </tbody>
+            </table>
+          </div>
+            
          </div>
    </section>
    <script src="./assets/js/main.js"></script>

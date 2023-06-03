@@ -221,10 +221,8 @@ const calculosBalance = () =>{
       set('gastos', filtrarGasto)
       $('#mostrarGastos').innerHTML = get('gastos')
 
-      console.log(filtrarGanancia)
-      console.log(filtrarGasto)
       const total = filtrarGanancia +  filtrarGasto
-      console.log(total)
+      
       $('#totalBalance').innerHTML = `${total}`
    }
 }
@@ -329,6 +327,89 @@ $('#filtrosDeOrden').addEventListener('change', () => {
 
 const arrayFiltrosInicial = aplicarFiltros()
 mostrarNuevaOperacion(arrayFiltrosInicial)
+
+
+
+const gastosCategoria = {}
+const gananciaCategoria = {}
+
+
+
+const gastosPorCategoria = () =>{
+   $('.cuerpotablaReportes').innerHTML += ''
+   for (const {tipo, categoria, monto} of operaciones) {
+      if (tipo === 'gasto') {
+         const nombre = categoria
+         if (!gastosCategoria[nombre]) {
+            gastosCategoria[nombre] = 0
+         }
+      gastosCategoria[nombre] -= monto
+}
+   else{
+      const nombre = categoria
+      if(!gananciaCategoria[nombre]){
+         gananciaCategoria[nombre] = 0
+      }
+      gananciaCategoria[nombre] += monto
+   }
+   }
+
+}
+
+gastosPorCategoria()
+
+
+const categorias = {}
+
+for (const [categoria, monto] of Object.entries(gastosCategoria)) {
+  if (!categorias[categoria]) {
+    categorias[categoria] = { ganancia: 0, gasto: 0 }
+  }
+  categorias[categoria].gasto = monto
+}
+
+for (const [categoria, monto] of Object.entries(gananciaCategoria)) {
+  if (!categorias[categoria]) {
+    categorias[categoria] = { ganancia: 0, gasto: 0 }
+  }
+  categorias[categoria].ganancia = monto
+}
+
+console.log(categorias)
+
+const conReportes = () => {
+  const operaciones = get('operaciones')
+  if (operaciones.length > 0) {
+    ocultar('#sinReportes')
+    mostrar('#conReportes')
+    for (const categoria in categorias) {
+      const montoGanancia = categorias[categoria].ganancia
+      const montoGasto = categorias[categoria].gasto
+      let balancePositivo
+      let balanceNegativo
+      if (montoGanancia > 0) {
+         balancePositivo += montoGanancia
+       }
+       else{
+         balanceNegativo += montoGasto
+       }
+      const balance = montoGasto + montoGanancia
+      $('.cuerpotablaReportes').innerHTML += `
+        <tr class='tr'>
+          <td>${categoria}</td>
+          <td>${montoGanancia}</td>
+          <td>${montoGasto}</td>
+          <td>${balance}</td>
+        </tr>
+      `
+    }
+  }
+}
+
+conReportes()
+
+
+
 
 const inicializador = () =>{
    fechaFiltroDeHoy()
