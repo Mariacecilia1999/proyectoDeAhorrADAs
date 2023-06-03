@@ -361,21 +361,24 @@ gastosPorCategoria()
 
 const categorias = {}
 
-for (const [categoria, monto] of Object.entries(gastosCategoria)) {
-  if (!categorias[categoria]) {
-    categorias[categoria] = { ganancia: 0, gasto: 0 }
-  }
-  categorias[categoria].gasto = monto
+const mostrarTotalesCategoria = () =>{
+   for (const [categoria, monto] of Object.entries(gastosCategoria)) {
+   if (!categorias[categoria]) {
+      categorias[categoria] = { ganancia: 0, gasto: 0 }
+   }
+   categorias[categoria].gasto = monto
+   }
+
+   for (const [categoria, monto] of Object.entries(gananciaCategoria)) {
+   if (!categorias[categoria]) {
+      categorias[categoria] = { ganancia: 0, gasto: 0 }
+   }
+   categorias[categoria].ganancia = monto
+   }
 }
 
-for (const [categoria, monto] of Object.entries(gananciaCategoria)) {
-  if (!categorias[categoria]) {
-    categorias[categoria] = { ganancia: 0, gasto: 0 }
-  }
-  categorias[categoria].ganancia = monto
-}
+mostrarTotalesCategoria()
 
-console.log(categorias)
 
 const conReportes = () => {
   const operaciones = get('operaciones')
@@ -408,6 +411,14 @@ const conReportes = () => {
 
 conReportes()
 
+const resumenCategorias = () =>{
+   const categoriaMayorGanancia = Object.keys(gananciaCategoria).find(categoria =>{
+      return gananciaCategoria[categoria] === Math.max(...Object.values(gananciaCategoria))
+   })
+
+   console.log(categoriaMayorGanancia)
+}
+resumenCategorias()
 
 
 
@@ -494,6 +505,8 @@ const inicializador = () =>{
       mostrarMd('#seccionBalance')
    })
 }
+
+console.log(gananciaCategoria)
 
 window.addEventListener('load', inicializador)
 
